@@ -17,6 +17,7 @@ namespace YazLab3
         int width, height;
         int total_frame;
         int TimerCount = 0;
+        Boolean flag = false;
 
         public Form1()
         {
@@ -33,7 +34,7 @@ namespace YazLab3
             if(dialog.ShowDialog() == DialogResult.OK)
             {
                 path = dialog.FileName;
-                Console.WriteLine(path);
+                //Console.WriteLine(path);
             }
         }
 
@@ -56,24 +57,28 @@ namespace YazLab3
             }
             width = result;
 
-            var v = type.SelectedIndex;
-            Console.WriteLine(v);
+            if (!string.IsNullOrEmpty(path))
+            {
+                var v = type.SelectedIndex;
+                //Console.WriteLine(v);
 
-            if (v == 0)
-            {
-                Decode444(path);
                 ClearFolder();
+
+                if (v == 0)
+                {
+                    Decode444(path);
+                }
+                else if (v == 1)
+                {                  
+                    Decode422(path);
+                }
+                else if (v == 2)
+                {
+                    Decode420(path);
+                }
             }
-            else if (v == 1)
-            {
-                Decode422(path);
-                ClearFolder();
-            }
-            else if (v == 2)
-            {
-                ClearFolder();
-                Decode420(path);
-            }
+
+            
         }
 
         private void Decode444(string path)
@@ -204,16 +209,26 @@ namespace YazLab3
 
         private void button2_Click(object sender, EventArgs e)
         {
+            
+            
 
-            timer1.Interval = 40;
-            timer1.Enabled = true;
-            pictureBox1.Image = new Bitmap("bmp/frame-1.bmp");
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            if (!flag)
+            {
+                timer1.Interval = 40;
+                timer1.Enabled = true;
+            }
+            else
+            {
+                timer1.Enabled = false;
+            }
+            //pictureBox1.Image = new Bitmap("bmp/frame-1.bmp");
+            //pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            TimerCount++;
+            flag = true;
+           
             if(TimerCount == total_frame-1)
             {
                 timer1.Enabled = false;
@@ -221,6 +236,7 @@ namespace YazLab3
             }
             pictureBox1.Image = new Bitmap("bmp/frame-" + TimerCount + ".bmp");
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            TimerCount++;
         }
 
         public void ClearFolder()
