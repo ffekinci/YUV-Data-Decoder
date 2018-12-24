@@ -209,9 +209,6 @@ namespace YazLab3
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
-            
-
             if (!flag)
             {
                 timer1.Interval = 40;
@@ -220,6 +217,7 @@ namespace YazLab3
             else
             {
                 timer1.Enabled = false;
+                flag = false;
             }
             //pictureBox1.Image = new Bitmap("bmp/frame-1.bmp");
             //pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -232,6 +230,8 @@ namespace YazLab3
             if(TimerCount == total_frame-1)
             {
                 timer1.Enabled = false;
+                TimerCount = 0;
+                flag = false;
                 
             }
             pictureBox1.Image = new Bitmap("bmp/frame-" + TimerCount + ".bmp");
