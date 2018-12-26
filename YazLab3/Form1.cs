@@ -83,25 +83,24 @@ namespace YazLab3
 
         private void Decode444(string path)
         {
-            var bytes = File.ReadAllBytes(path);
-            //Console.WriteLine(bytes.Length);
+            var bytes = new FileStream(path, FileMode.Open);
+            Console.WriteLine(bytes.Length);
+            byte[] tmp = new byte[width * height * 3];
 
-            total_frame = bytes.Length / (width * height * 3);
-            //trackBar1.Minimum = 1;
-            //trackBar1.Maximum = total_frame;
-            //frame.Text = "Frame : 1";
 
             Bitmap bitmap = new Bitmap(width, height);
             Color color;
 
+            total_frame = (int)bytes.Length / (width * height * 3);
+            Console.WriteLine(total_frame);
             for (int m = 0; m < total_frame; m++)
             {
+                bytes.Read(tmp, 0, tmp.Length);
 
                 int j = 0, k = 0;
-                int begin = m * width * height * 3;
-                for (int i = begin; i < begin + width * height; i++)
+                for (int i = 0; i < width * height; i++)
                 {
-                    color = Color.FromArgb(bytes[i], bytes[i], bytes[i]);
+                    color = Color.FromArgb(tmp[i], tmp[i], tmp[i]);
 
                     bitmap.SetPixel(k, j, color);
 
@@ -116,7 +115,8 @@ namespace YazLab3
                 string s = "frame-" + m + ".bmp";
                 pictureBox1.Image = bitmap;
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                bitmap.Save("bmp/"+s);
+                bitmap.Save("bmp/" + s);
+
 
             }
 
@@ -125,25 +125,24 @@ namespace YazLab3
 
         private void Decode422(string path)
         {
-            var bytes = File.ReadAllBytes(path);
-            //Console.WriteLine(bytes.Length);
+            var bytes = new FileStream(path, FileMode.Open);
+            Console.WriteLine(bytes.Length);
+            byte[] tmp = new byte[width * height * 2];
 
-            total_frame = bytes.Length / (width * height * 2);
-            //trackBar1.Minimum = 1;
-            //trackBar1.Maximum = total_frame;
-            //frame.Text = "Frame : 1";
 
             Bitmap bitmap = new Bitmap(width, height);
             Color color;
 
+            total_frame = (int)bytes.Length / (width * height * 2);
+            Console.WriteLine(total_frame);
             for (int m = 0; m < total_frame; m++)
             {
+                bytes.Read(tmp, 0, tmp.Length);
 
                 int j = 0, k = 0;
-                int begin = m * width * height * 2;
-                for (int i = begin; i < begin + width * height; i++)
+                for (int i = 0; i < width * height; i++)
                 {
-                    color = Color.FromArgb(bytes[i], bytes[i], bytes[i]);
+                    color = Color.FromArgb(tmp[i], tmp[i], tmp[i]);
 
                     bitmap.SetPixel(k, j, color);
 
@@ -158,34 +157,35 @@ namespace YazLab3
                 string s = "frame-" + m + ".bmp";
                 pictureBox1.Image = bitmap;
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                bitmap.Save("bmp/"+s);
+                bitmap.Save("bmp/" + s);
+
 
             }
 
 
         }
 
-        private void Decode420(string path)
+        void Decode420(string path)
         {
-            var bytes = File.ReadAllBytes(path);
-            //Console.WriteLine(bytes.Length);
+            var bytes = new FileStream(path, FileMode.Open);
+            Console.WriteLine(bytes.Length);
+            int byt =(int)( width * height * 1.5);
+            byte[] tmp = new byte[byt];
 
-            total_frame = (int) (bytes.Length / (width * height * 1.5));
-            //trackBar1.Minimum = 1;
-            //trackBar1.Maximum = total_frame;
-            //frame.Text = "Frame : 1";
 
             Bitmap bitmap = new Bitmap(width, height);
             Color color;
 
+            total_frame = (int) (bytes.Length / (width * height * 1.5));
+            Console.WriteLine(total_frame);
             for (int m = 0; m < total_frame; m++)
             {
+                bytes.Read(tmp, 0, tmp.Length);
 
                 int j = 0, k = 0;
-                int begin =(int)( m * width * height * 1.5);
-                for (int i = begin; i < begin + width * height; i++)
+                for (int i = 0; i < width * height; i++)
                 {
-                    color = Color.FromArgb(bytes[i], bytes[i], bytes[i]);
+                    color = Color.FromArgb(tmp[i], tmp[i], tmp[i]);
 
                     bitmap.SetPixel(k, j, color);
 
@@ -200,7 +200,8 @@ namespace YazLab3
                 string s = "frame-" + m + ".bmp";
                 pictureBox1.Image = bitmap;
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                bitmap.Save("bmp/"+s);
+                bitmap.Save("bmp/" + s);
+
 
             }
 
@@ -232,8 +233,9 @@ namespace YazLab3
                 timer1.Enabled = false;
                 TimerCount = 0;
                 flag = false;
-                
+
             }
+
             pictureBox1.Image = new Bitmap("bmp/frame-" + TimerCount + ".bmp");
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             TimerCount++;
