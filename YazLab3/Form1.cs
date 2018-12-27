@@ -236,7 +236,7 @@ namespace YazLab3
 
             }
 
-            pictureBox1.Image = new Bitmap("bmp/frame-" + TimerCount + ".bmp");
+            pictureBox1.ImageLocation ="bmp/frame-" + TimerCount + ".bmp";
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             TimerCount++;
         }
